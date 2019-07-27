@@ -33,8 +33,7 @@ public class przyklad1 {
         Double avg = session.createQuery("SELECT AVG(k.id) FROM Klient k", Double.class).getSingleResult();
 
         //laczenie JOIN
-        klienci = session.createQuery("SELECT k FROM Klient k, Umowa u ", Klient.class).getResultList();
-        klienci = session.createQuery("SELECT k FROM Klient k JOIN k.umowy u ", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k JOIN FETCH k.umowy u ", Klient.class).getResultList();
 
         //ustawianie maksymalnej liczby rekordow
         klienci = session.createQuery("SELECT k FROM Klient k", Klient.class).setMaxResults(5).getResultList();
