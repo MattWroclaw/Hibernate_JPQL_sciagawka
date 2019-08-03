@@ -14,13 +14,27 @@ public class przyklad1 {
     public static void main(String[] args) {
         insertData();
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Klient> klienci = new ArrayList<Klient>();
+        List<Klient> klienci = new ArrayList<>();
+        List<Umowa> umowy = new ArrayList<>();
         //odpowiednik zapytania SELECT * FROM klient
         klienci = session.createQuery("FROM Klient", Klient.class).getResultList();
         klienci = session.createQuery("SELECT k FROM Klient k", Klient.class).getResultList();
+        //klauzula WHERE
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.imie in ('Jan','Robert')", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.id between 1 and 10", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.nazwisko is null", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.nazwisko is not null", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.nazwisko LIKE 'A'", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.nazwisko NOT LIKE 'R'", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.imie LIKE '_la'", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.imie ='Ola' or k.imie='Ala'", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.umowy.size>10", Klient.class).getResultList();
 
+        //select z warunkiem z podklasy
+        umowy = session.createQuery("SELECT u FROM Umowa u WHERE u.klient.imie='Ala'", Umowa.class).getResultList();
         //select z konkretnymi kolumnami SELECT imie, nazwisko FROM klient
         Object klienciImieNazwisko = session.createQuery("SELECT k.imie, k.nazwisko FROM Klient k").getResultList();
+
 
         //funkcje agregujace
         //Count zwraca liczbe wierszy
@@ -34,6 +48,8 @@ public class przyklad1 {
 
         //laczenie JOIN
         klienci = session.createQuery("SELECT k FROM Klient k JOIN FETCH k.umowy u ", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT DISTINCT k FROM Klient k JOIN FETCH k.umowy u ", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k JOIN  k.umowy u ", Klient.class).getResultList();
 
         //ustawianie maksymalnej liczby rekordow
         klienci = session.createQuery("SELECT k FROM Klient k", Klient.class).setMaxResults(5).getResultList();
@@ -53,13 +69,13 @@ public class przyklad1 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
 
-        String imiona[] = {"Adam", "Ewa", "Stanisla", "Szymon", "Ola", "Ala", "Robert", "Marcin", "Karolina", "Sylwia", "Ewelina", "Kamil", "Sandra", "Wojtek", "Katarzyna", "Slawek"};
-        String nazwiska[] = {"Nowak", "Kowalski", "Mickiewicz", "Slowacki", "Duda", "Trampek", "Wilk", "Szybki", "Wesoly", "Smutny", "Mily", "Nowy", "Maly", "Smialy", "Bolo", "Madry"};
+        String imiona[] = {"Adam", "Ewa", "Stanislaw", "Szymon", "Ola", "Ala", "Robert", "Marcin", "Karolina", "Sylwia", "Ewelina", "Kamil", "Sandra", "Wojtek", "Katarzyna", "Slawek", "Kamila"};
+        String nazwiska[] = {"Nowak", "Kowalski", "Mickiewicz", "Slowacki", "Duda", "Trampek", "Wilk", "Szybki", "Wesoly", "Smutny", "Mily", "Nowy", "Maly", null, null, null, null};
 
         for (int i = 0; i < imiona.length; i++) {
             Klient klinet = new Klient(imiona[i], nazwiska[i]);
             session.persist(klinet);
-            for (int j = 1; j < 4; j++) {
+            for (int j = 1; j < i+2; j++) {
                 Umowa umowa = new Umowa("umowa" + j, Date.valueOf(LocalDate.now()), klinet);
                 session.persist(umowa);
             }
