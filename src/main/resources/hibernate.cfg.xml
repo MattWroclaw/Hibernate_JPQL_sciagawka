@@ -9,7 +9,7 @@
         <property name="hibernate.connection.password">Start123!</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL55Dialect</property>
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
         <mapping class="sda.hibernate.entity.Klient"/>
         <mapping class="sda.hibernate.entity.Umowa"/>
     </session-factory>

@@ -24,8 +24,9 @@ public class przyklad1 {
         klienci = session.createQuery("SELECT k FROM Klient k WHERE k.id between 1 and 10", Klient.class).getResultList();
         klienci = session.createQuery("SELECT k FROM Klient k WHERE k.nazwisko is null", Klient.class).getResultList();
         klienci = session.createQuery("SELECT k FROM Klient k WHERE k.nazwisko is not null", Klient.class).getResultList();
-        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.nazwisko LIKE 'A'", Klient.class).getResultList();
-        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.nazwisko NOT LIKE 'R'", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.imie LIKE 'A%'", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.imie NOT LIKE 'R%'", Klient.class).getResultList();
+        klienci = session.createQuery("SELECT k FROM Klient k WHERE k.imie LIKE CONCAT('%',:naz,'%')", Klient.class).setParameter("naz","W").getResultList();
         klienci = session.createQuery("SELECT k FROM Klient k WHERE k.imie LIKE '_la'", Klient.class).getResultList();
         klienci = session.createQuery("SELECT k FROM Klient k WHERE k.imie ='Ola' or k.imie='Ala'", Klient.class).getResultList();
         klienci = session.createQuery("SELECT k FROM Klient k WHERE k.umowy.size>10", Klient.class).getResultList();
