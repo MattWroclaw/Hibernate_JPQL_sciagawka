@@ -59,4 +59,14 @@ public class Umowa {
     public void setKlient(Klient klient) {
         this.klient = klient;
     }
+
+    @Override
+    public String toString() {
+        return "Umowa{" +
+                "id=" + id +
+                ", tytul='" + tytul + '\'' +
+                ", dataPodpisania=" + dataPodpisania +
+                ", klient=" + klient +
+                '}';
+    }
 }

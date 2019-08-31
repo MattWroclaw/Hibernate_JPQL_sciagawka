@@ -61,4 +61,13 @@ public class Klient {
 
     public Klient() {
     }
+
+    @Override
+    public String toString() {
+        return "Klient{" +
+                "id=" + id +
+                ", imie='" + imie + '\'' +
+                ", nazwisko='" + nazwisko + '\'' +
+                '}';
+    }
 }
